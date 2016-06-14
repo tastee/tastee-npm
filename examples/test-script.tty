@@ -1,0 +1,8 @@
+go to http://www.google.fr
+
+log some value twice 
+
+call go to google
+call go to http://www.norsys.fr
+call go to wikipedia.Selenium
+

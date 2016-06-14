@@ -1,0 +1,35 @@
+{
+  "name": "tasty",
+  "version": "0.0.1",
+  "description": "Command line for tasty",
+  "homepage" : "http://tasty-it.github.io",
+  "keywords" : [
+    "test",
+    "tasty",
+    "tasty-it",
+    "bdd"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tasty-it/tasty-npm.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/tasty-it/tasty-npm/issues"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-codacy": "^1.0.0",
+    "gulp-istanbul": "^0.10.4",
+    "gulp-jasmine": "^2.3.0",
+    "npm": "^3.9.0"
+  },
+  "dependencies": {
+    "tasty-core": "git+https://github.com/tasty-it/tasty-core.git",
+    "commander": "^2.9.0"
+  },
+  "bin": {
+    "tasty": "./bin/tasty.js"
+  },
+  "main": "./bin/tasty.js"
+}

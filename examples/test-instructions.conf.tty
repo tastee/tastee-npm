@@ -1,0 +1,26 @@
+go to $url *{
+    driver.get($url);
+}*
+
+click on $name *{
+    driver.findElement(By.name($name)).click();
+}*
+
+verify that $name is $value *{
+    var element = driver.findElement(By.css('.'+$name));
+    element.getText().then(function(text) {
+        assert.equal(text, $value, 'the '+ $name + ' element contains '+text);
+    });
+}*
+
+log some $value twice *{
+    console.log('log once '+$value+', and twice '+$value);
+}*
+
+call go to google *{
+    go to http://www.google.fr
+}*
+
+call go to $url *{
+    go to $url
+}*
