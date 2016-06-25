@@ -4,5 +4,6 @@ log some value twice
 
 call go to google
 call go to http://www.norsys.fr
+verify that mentions is toto
 call go to wikipedia.Selenium
 
