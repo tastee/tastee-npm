@@ -3,7 +3,7 @@
 var program = require('commander');
 var fs = require("fs");
 var core = require("tastee-core");
-var Reporter = require("tastee-core/app/tastee-reporter");
+var tasteeReporter = require("tastee-core/app/tastee-reporter");
 
 program
     .arguments('<tastee script file>')
@@ -46,8 +46,8 @@ program
 
                 core.execute(data).then(function (instructions) {
                     switch (reporter) {
-                        case "junit": Reporter.generateJunitReporter(instructions); break;
-                        default: Reporter.generateConsoleLog(instructions);
+                        case "junit": tasteeReporter.generateJunitReporter(instructions); break;
+                        default: tasteeReporter.generateConsoleLog(instructions);
                     }
                 });;
                 core.stop();
