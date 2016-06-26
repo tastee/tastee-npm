@@ -1,21 +1,21 @@
 {
-  "name": "tasty",
+  "name": "tastee",
   "version": "0.0.1",
-  "description": "Command line for tasty",
-  "homepage" : "http://tasty-it.github.io",
+  "description": "Toast your Application with Simple Tests End to End - Command line module",
+  "homepage" : "http://tastee.github.io",
   "keywords" : [
     "test",
-    "tasty",
-    "tasty-it",
+    "tastee",
+    "tastee-it",
     "bdd"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tasty-it/tasty-npm.git"
+    "url": "git+https://github.com/tastee/tastee-npm.git"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/tasty-it/tasty-npm/issues"
+    "url": "https://github.com/tastee/tastee-npm/issues"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -25,11 +25,11 @@
     "npm": "^3.9.0"
   },
   "dependencies": {
-    "tasty-core": "git+https://github.com/tasty-it/tasty-core.git",
+    "tastee-core": "git+https://github.com/tastee/tastee-core.git",
     "commander": "^2.9.0"
   },
   "bin": {
-    "tasty": "./bin/tasty.js"
+    "tastee": "./bin/tastee.js"
   },
-  "main": "./bin/tasty.js"
+  "main": "./bin/tastee.js"
 }

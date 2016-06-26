@@ -2,11 +2,11 @@
 
 var program = require('commander');
 var fs = require("fs");
-var core = require("tasty-core");
-var Reporter = require("tasty-core/app/tasty-reporter");
+var core = require("tastee-core");
+var Reporter = require("tastee-core/app/tastee-reporter");
 
 program
-    .arguments('<tasty script file>')
+    .arguments('<tastee script file>')
     .option('-i, --instructions <instruction files>', 'Custom instruction files separated with semicolons')
     .option('-p, --parameters <parameter files>', 'Custom parameter files separated with semicolons')
     .option('-b, --browser <browser>', 'Browser in which to execute script (either firefox, chrome, phantomJs, ... depending on your drivers)')
@@ -31,11 +31,11 @@ program
         if (program.browser) {
             browser = program.browser;
         }
-        var screenshotpath = './tasty-report/screenshot'
+        var screenshotpath = './tastee-report/screenshot'
         if (program.screenshotpath) {
             screenshotpath = program.screenshotpath;
         }
-        var reporter = './tasty-report/'
+        var reporter = './tastee-report/'
         if (program.reporter) {
             reporter = program.reporter;
         }
