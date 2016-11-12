@@ -2,8 +2,8 @@
   "name": "tastee",
   "version": "0.0.1",
   "description": "Toast your Application with Simple Tests End to End - Command line module",
-  "homepage" : "http://tastee.github.io",
-  "keywords" : [
+  "homepage": "http://tastee.github.io",
+  "keywords": [
     "test",
     "tastee",
     "tastee-it",
@@ -18,15 +18,16 @@
     "url": "https://github.com/tastee/tastee-npm/issues"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-codacy": "^1.0.0",
-    "gulp-istanbul": "^0.10.4",
-    "gulp-jasmine": "^2.3.0",
-    "npm": "^3.9.0"
+    "chromedriver": "^2.25.1",
+    "gulp": "3.9.1",
+    "gulp-codacy": "1.0.0",
+    "gulp-istanbul": "1.1.1",
+    "gulp-jasmine": "2.4.2",
+    "npm": "3.10.9"
   },
   "dependencies": {
     "tastee-core": "git+https://github.com/tastee/tastee-core.git",
-    "commander": "^2.9.0"
+    "commander": "2.9.0"
   },
   "bin": {
     "tastee": "./bin/tastee.js"
