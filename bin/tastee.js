@@ -2,8 +2,10 @@
 
 var program = require('commander');
 var fs = require("fs");
-var core = require("tastee-core");
-var tasteeReporter = require("tastee-core/app/tastee-reporter");
+var TasteeCore = require("tastee-core/src/app/tastee-core");
+var TasteeReporter = require("tastee-core/src/app/tastee-reporter");
+var TasteeEngine = require("tastee-core/src/app/tastee-engine");
+var TasteeAnalyser = require("tastee-core/src/app/tastee-analyser");
 
 program
     .arguments('<tastee script file>')
@@ -16,17 +18,7 @@ program
 
         console.log('instructions: %s parameters: %s file: %s screenshotpath: %s reporter: %s',
             program.instructions, program.parameters, file, program.screenshotpath, program.reporter);
-
-        if (program.instructions) {
-            program.instructions.split(";").forEach(function (filePath) {
-                core.addPluginFile(filePath);
-            });
-        }
-        if (program.parameters) {
-            program.parameters.split(";").forEach(function (filePath) {
-                core.addParamFile(filePath);
-            });
-        }
+        
         var browser = 'chrome';
         if (program.browser) {
             browser = program.browser;
@@ -40,10 +32,24 @@ program
             reporter = program.reporter;
         }
 
+        var engine = new TasteeEngine.TasteeEngine(browser, reporter);
+        var core = new TasteeCore.TasteeCore(engine, new TasteeAnalyser.TasteeAnalyser());
+        var tasteeReporter = new TasteeReporter.TasteeReporter();
+
+        if (program.instructions) {
+            program.instructions.split(";").forEach(function (filePath) {
+                core.addPluginFile(filePath);
+            });
+        }
+        if (program.parameters) {
+            program.parameters.split(";").forEach(function (filePath) {
+                core.addParamFile(filePath);
+            });
+        }
+
         fs.readFile(file, "utf8", function (err, data) {
             if (!err) {
-                core.init(browser, screenshotpath);
-
+            
                 core.execute(data).then(function (instructions) {
                     switch (reporter) {
                         case "junit": tasteeReporter.generateJunitReporter(instructions); break;
