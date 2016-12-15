@@ -12,27 +12,27 @@ program
     .option('-i, --instructions <instruction files>', 'Custom instruction files separated with semicolons')
     .option('-p, --parameters <parameter files>', 'Custom parameter files separated with semicolons')
     .option('-b, --browser <browser>', 'Browser in which to execute script (either firefox, chrome, phantomJs, ... depending on your drivers)')
-    .option('-s, --screenshotpath <screenshotpath>', 'Screenshotpath is path where screenshot is saved')
+    .option('-p, --path <path>', 'Path is path where rapport generated')
     .option('-r, --reporter <reporter>', 'Select the desired report between : junit')
     .action(function (file) {
+        console.log('   ***   ')
 
-        console.log('instructions: %s parameters: %s file: %s screenshotpath: %s reporter: %s',
-            program.instructions, program.parameters, file, program.screenshotpath, program.reporter);
-        
         var browser = 'chrome';
         if (program.browser) {
             browser = program.browser;
-        }
-        var screenshotpath = './tastee-report/screenshot'
-        if (program.screenshotpath) {
-            screenshotpath = program.screenshotpath;
-        }
-        var reporter = './tastee-report/'
+        }    
+
+        var reporter='html';
         if (program.reporter) {
             reporter = program.reporter;
         }
 
-        var engine = new TasteeEngine.TasteeEngine(browser, reporter);
+        var path = './tastee-reporting';
+        if (program.path) {
+            path = program.path;
+        }  
+
+        var engine = new TasteeEngine.TasteeEngine(browser, path);
         var core = new TasteeCore.TasteeCore(engine, new TasteeAnalyser.TasteeAnalyser());
         var tasteeReporter = new TasteeReporter.TasteeReporter();
 
@@ -40,21 +40,29 @@ program
             program.instructions.split(";").forEach(function (filePath) {
                 core.addPluginFile(filePath);
             });
+            console.log('instructions  : '+ program.instructions);
         }
         if (program.parameters) {
             program.parameters.split(";").forEach(function (filePath) {
                 core.addParamFile(filePath);
             });
+            console.log('parameters : '+ program.parameters);
         }
+
+        console.log('browser       : '+browser);
+        console.log('reporter path : '+path);
+        console.log('   ***   ')
+
 
         fs.readFile(file, "utf8", function (err, data) {
             if (!err) {
-            
+                console.log('Started ...')
                 core.execute(data).then(function (instructions) {
                     switch (reporter) {
                         case "junit": tasteeReporter.generateJunitReporter(instructions); break;
-                        default: tasteeReporter.generateConsoleLog(instructions);
+                        case "html":  tasteeReporter.generateHtmlReporter(path,file.split('.')[0],instructions);break;
                     }
+                    console.log('... Finished !')
                 });;
                 core.stop();
             } else {
