@@ -85,6 +85,7 @@ program
                     fs.readFile(path.join(file,filename), "utf8", function (err, data) {
                         if (!err) {
                             console.log('Starting  :'+filename);
+                            core.initEnginer(new TasteeEngine.TasteeEngine(browser, reportingPath));
                             core.execute(data,path.basename(filename,".tee")).then(function (instructions) {
                                 switch (reporter) {
                                     case "junit": tasteeReporter.generateJunitReporter(instructions); break;
