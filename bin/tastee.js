@@ -55,7 +55,7 @@ program
             fs.readFile(file, "utf8", function (err, data) {
                 if (!err) {
                     console.log('Started ...')
-                    core.execute(data).then(function (instructions) {
+                    core.execute(data,path.basename(file,".tee")).then(function (instructions) {
                         switch (reporter) {
                             case "junit": tasteeReporter.generateJunitReporter(instructions); break;
                             case "html": tasteeReporter.generateHtmlReporter(reportingPath, path.basename(file,".tee"), instructions); break;
@@ -85,7 +85,7 @@ program
                     fs.readFile(path.join(file,filename), "utf8", function (err, data) {
                         if (!err) {
                             console.log('Starting  :'+filename);
-                            core.execute(data).then(function (instructions) {
+                            core.execute(data,path.basename(filename,".tee")).then(function (instructions) {
                                 switch (reporter) {
                                     case "junit": tasteeReporter.generateJunitReporter(instructions); break;
                                     case "html": tasteeReporter.generateHtmlReporter(reportingPath, path.basename(filename,".tee"), instructions); break;
