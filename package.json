@@ -26,8 +26,9 @@
     "npm": "3.10.9"
   },
   "dependencies": {
-    "tastee-core": "git+https://github.com/tastee/tastee-core.git",
-    "commander": "2.9.0"
+    "commander": "2.9.0",
+    "glob": "^7.1.1",
+    "tastee-core": "git+https://github.com/tastee/tastee-core.git"
   },
   "bin": {
     "tastee": "./bin/tastee.js"
