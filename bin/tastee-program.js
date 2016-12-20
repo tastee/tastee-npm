@@ -8,22 +8,21 @@ var path = require("path");
 var glob = require("glob");
 var TasteeProgram = (function () {
     function TasteeProgram(program) {
-        this.workingConfigurationFilesCb = function (file, tasteeProgram) { return function (err, filenames) {
+        this.workingConfigurationFilesCb = function (file, tasteeCore) { return function (err, filenames) {
             filenames.forEach(function (filename) {
                 if (filename.search('/\.conf\.tee/')) {
                     console.log('Add plugin file :' + filename);
-                    tasteeProgram.core.addPluginFile(filename);
+                    tasteeCore.addPluginFile(filename);
                 }
                 else {
                     console.log('Add param file :' + filename);
-                    tasteeProgram.core.addParamFile(filename);
+                    tasteeCore.addParamFile(filename);
                 }
             });
         }; };
         this.readFilesCb = function (filename, tasteeProgram) { return function (err, data) {
             console.log('Starting  :' + filename);
             if (!err) {
-                console.log(tasteeProgram);
                 tasteeProgram.core.initEnginer(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                 tasteeProgram.executeTasteeCore(data, filename, tasteeProgram);
                 tasteeProgram.core.stop();
@@ -57,7 +56,7 @@ var TasteeProgram = (function () {
         fs.readFile(file, "utf8", function (err, data) {
             console.log('Started ...');
             if (!err) {
-                this.executeTasteeCore(data, file, tasteeProgram);
+                tasteeProgram.executeTasteeCore(data, file, tasteeProgram);
                 tasteeProgram.core.stop();
             }
             else {
@@ -82,7 +81,7 @@ var TasteeProgram = (function () {
     TasteeProgram.prototype.runContinuusMode = function (file) {
         console.log('Started ...');
         var tasteeProgram = this;
-        glob(path.join(file, "**", "+(*.conf|*.param).tee"), { absolute: true }, this.workingConfigurationFilesCb(file, tasteeProgram));
+        glob(path.join(file, "**", "+(*.conf|*.param).tee"), { absolute: true }, this.workingConfigurationFilesCb(file, this.core));
         glob(path.join(file, "**", "!(*.conf|*.param).tee"), { absolute: true }, this.workingTasteeFilesCb(file, tasteeProgram));
     };
     TasteeProgram.prototype.run = function (file) {

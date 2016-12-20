@@ -35,7 +35,7 @@ export class TasteeProgram {
                 fs.readFile(file, "utf8", function (err, data) {
                         console.log('Started ...')
                         if (!err) {
-                                this.executeTasteeCore(data, file, tasteeProgram);
+                                tasteeProgram.executeTasteeCore(data, file, tasteeProgram);
                                 tasteeProgram.core.stop();
                         } else {
                                 console.error(err);
@@ -53,14 +53,14 @@ export class TasteeProgram {
                 });;
         }
 
-        public workingConfigurationFilesCb = (file: string, tasteeProgram: TasteeProgram) => function (err, filenames) {
+        public workingConfigurationFilesCb = (file: string, tasteeCore: TasteeCore) => function (err, filenames) {
                 filenames.forEach(function (filename) {
                         if (filename.search('/\.conf\.tee/')) {
                                 console.log('Add plugin file :' +filename)
-                                tasteeProgram.core.addPluginFile(filename);
+                                tasteeCore.addPluginFile(filename);
                         } else {
                                 console.log('Add param file :' + filename)
-                                tasteeProgram.core.addParamFile(filename);
+                                tasteeCore.addParamFile(filename);
                         }
                 });
         }
@@ -68,7 +68,6 @@ export class TasteeProgram {
         public readFilesCb = (filename, tasteeProgram: TasteeProgram) => function (err, data) {
                 console.log('Starting  :' + filename);
                 if (!err) {
-                        console.log(tasteeProgram);
                         tasteeProgram.core.initEnginer(new TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                         tasteeProgram.executeTasteeCore(data, filename, tasteeProgram);
                         tasteeProgram.core.stop();
@@ -86,7 +85,7 @@ export class TasteeProgram {
         public runContinuusMode(file: string) {
                 console.log('Started ...')
                 var tasteeProgram: TasteeProgram = this;
-                glob(path.join(file, "**", "+(*.conf|*.param).tee"), { absolute: true }, this.workingConfigurationFilesCb(file, tasteeProgram));
+                glob(path.join(file, "**", "+(*.conf|*.param).tee"), { absolute: true }, this.workingConfigurationFilesCb(file, this.core));
                 glob(path.join(file, "**", "!(*.conf|*.param).tee"), { absolute: true }, this.workingTasteeFilesCb(file, tasteeProgram));
         }
 
