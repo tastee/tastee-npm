@@ -1,14 +1,13 @@
 #!/usr/bin/env node
-
-var program = require('commander');
-var fs = require('fs');
-var TasteeCore = require('tastee-core/src/app/tastee-core');
-var TasteeReporter = require('tastee-core/src/app/tastee-reporter');
-var TasteeEngine = require('tastee-core/src/app/tastee-engine');
-var TasteeAnalyser = require('tastee-core/src/app/tastee-analyser');
-var path = require('path');
-var glob = require("glob")
-
+"use strict";
+var program = require("commander");
+var fs = require("fs");
+var tastee_core_1 = require("tastee-core/src/app/tastee-core");
+var tastee_reporter_1 = require("tastee-core/src/app/tastee-reporter");
+var tastee_engine_1 = require("tastee-core/src/app/tastee-engine");
+var tastee_analyser_1 = require("tastee-core/src/app/tastee-analyser");
+var path = require("path");
+var glob = require("glob");
 program
     .arguments('<tastee script file>')
     .option('-i, --instructions <instruction files>', 'Custom instruction files separated with semicolons')
@@ -17,97 +16,102 @@ program
     .option('-p, --path <path>', 'Path is path where rapport generated')
     .option('-r, --reporter <reporter>', 'Select the desired report between : junit')
     .action(function (file) {
-        var browser = 'chrome';
-        if (program.browser) {
-            browser = program.browser;
+    var browser = 'chrome';
+    if (program.browser) {
+        browser = program.browser;
+    }
+    var reporter = 'html';
+    if (program.reporter) {
+        reporter = program.reporter;
+    }
+    var reportingPath = './tastee-reporting';
+    if (program.path) {
+        reportingPath = program.path;
+    }
+    var engine = new tastee_engine_1.TasteeEngine(browser, reportingPath);
+    var core = new tastee_core_1.TasteeCore(engine, new tastee_analyser_1.TasteeAnalyser());
+    var tasteeReporter = new tastee_reporter_1.TasteeReporter();
+    if (fs.lstatSync(file).isFile()) {
+        console.log('Lancement d un fichier unitaire');
+        if (program.instructions) {
+            program.instructions.split(";").forEach(function (filePath) {
+                core.addPluginFile(filePath);
+            });
+            console.log('instructions  : ' + program.instructions);
         }
-
-        var reporter = 'html';
-        if (program.reporter) {
-            reporter = program.reporter;
+        if (program.conf) {
+            program.conf.split(";").forEach(function (filePath) {
+                core.addParamFile(filePath);
+            });
+            console.log('conf : ' + program.parameters);
         }
-
-        var reportingPath = './tastee-reporting';
-        if (program.path) {
-            reportingPath = program.path;
-        }
-
-        var engine = new TasteeEngine.TasteeEngine(browser, reportingPath);
-        var core = new TasteeCore.TasteeCore(engine, new TasteeAnalyser.TasteeAnalyser());
-        var tasteeReporter = new TasteeReporter.TasteeReporter();
-
-
-        if (fs.lstatSync(file).isFile()) {
-            console.log('Lancement d un fichier unitaire')
-            if (program.instructions) {
-                program.instructions.split(";").forEach(function (filePath) {
-                    core.addPluginFile(filePath);
+        fs.readFile(file, "utf8", function (err, data) {
+            if (!err) {
+                console.log('Started ...');
+                core.execute(data, path.basename(file, ".tee")).then(function (instructions) {
+                    switch (reporter) {
+                        case "junit":
+                            tasteeReporter.generateJunitReporter(instructions);
+                            break;
+                        case "html":
+                            tasteeReporter.generateHtmlReporter(reportingPath, path.basename(file, ".tee"), instructions);
+                            break;
+                    }
+                    console.log('... Finished !');
                 });
-                console.log('instructions  : ' + program.instructions);
+                ;
+                core.stop();
             }
-
-            if (program.conf) {
-                program.conf.split(";").forEach(function (filePath) {
-                    core.addParamFile(filePath);
-                });
-                console.log('conf : ' + program.parameters);
+            else {
+                console.error(err);
             }
-            fs.readFile(file, "utf8", function (err, data) {
-                if (!err) {
-                    console.log('Started ...')
-                    core.execute(data,path.basename(file,".tee")).then(function (instructions) {
-                        switch (reporter) {
-                            case "junit": tasteeReporter.generateJunitReporter(instructions); break;
-                            case "html": tasteeReporter.generateHtmlReporter(reportingPath, path.basename(file,".tee"), instructions); break;
-                        }
-                        console.log('... Finished !')
-                    });;
-                    core.stop();
-                } else {
-                    console.error(err);
+        });
+    }
+    else {
+        console.log('Started ...');
+        glob(path.join(file, "**", "+(*.conf|*.param).tee"), { symlinks: true }, function (err, filenames) {
+            filenames.forEach(function (filename) {
+                if (filename.search('/\.conf\.tee/')) {
+                    console.log('Add plugin file :' + path.join(file, filename));
+                    core.addPluginFile(path.join(file, filename));
+                }
+                else {
+                    console.log('Add param file :' + path.join(file, filename));
+                    core.addParamFile(path.join(file, filename));
                 }
             });
-        } else {
-            console.log('Started ...')
-            glob(path.join(file, "**", "+(*.conf|*.param).tee"),{symlinks: true}, function (err, filenames) {
-                filenames.forEach(function (filename) {
-                    if(filename.search('/\.conf\.tee/')){
-                        console.log('Add plugin file :'+path.join(file,filename))
-                        core.addPluginFile(path.join(file,filename));
-                    }else{
-                        console.log('Add param file :'+path.join(file,filename))
-                        core.addParamFile(path.join(file,filename));
+        });
+        glob(path.join(file, "**", "!(*.conf|*.param).tee"), { symlinks: true }, function (err, filenames) {
+            filenames.forEach(function (filename) {
+                fs.readFile(path.join(file, filename), "utf8", function (err, data) {
+                    if (!err) {
+                        console.log('Starting  :' + filename);
+                        core.initEnginer(new tastee_engine_1.TasteeEngine(browser, reportingPath));
+                        core.execute(data, path.basename(filename, ".tee")).then(function (instructions) {
+                            switch (reporter) {
+                                case "junit":
+                                    tasteeReporter.generateJunitReporter(instructions);
+                                    break;
+                                case "html":
+                                    tasteeReporter.generateHtmlReporter(reportingPath, path.basename(filename, ".tee"), instructions);
+                                    break;
+                            }
+                            console.log('Finished :' + filename);
+                        });
+                        ;
+                        core.stop();
+                    }
+                    else {
+                        console.error(err);
                     }
                 });
             });
-            glob(path.join(file, "**", "!(*.conf|*.param).tee"),{symlinks: true}, function (err, filenames) {
-                filenames.forEach(function (filename) {
-                    fs.readFile(path.join(file,filename), "utf8", function (err, data) {
-                        if (!err) {
-                            console.log('Starting  :'+filename);
-                            core.initEnginer(new TasteeEngine.TasteeEngine(browser, reportingPath));
-                            core.execute(data,path.basename(filename,".tee")).then(function (instructions) {
-                                switch (reporter) {
-                                    case "junit": tasteeReporter.generateJunitReporter(instructions); break;
-                                    case "html": tasteeReporter.generateHtmlReporter(reportingPath, path.basename(filename,".tee"), instructions); break;
-                                }
-                                console.log('Finished :'+filename);
-                            });;
-                            core.stop();
-                        } else {
-                            console.error(err);
-                        }
-                    });
-
-                });
-            });
-        }
-        
-        console.log('   ***   ')
-        console.log('browser       : ' + browser);
-        console.log('reporter path : ' + reportingPath);
-        console.log('   ***   ')
-
-
-    })
+        });
+    }
+    console.log('   ***   ');
+    console.log('browser       : ' + browser);
+    console.log('reporter path : ' + reportingPath);
+    console.log('   ***   ');
+})
     .parse(process.argv);
+//# sourceMappingURL=/Users/luya/Workspace/tastee/tastee-npm/tastee.js.map

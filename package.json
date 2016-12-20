@@ -18,20 +18,26 @@
     "url": "https://github.com/tastee/tastee-npm/issues"
   },
   "devDependencies": {
+    "@types/node": "^6.0.52",
     "chromedriver": "^2.25.1",
     "gulp": "3.9.1",
     "gulp-codacy": "1.0.0",
     "gulp-istanbul": "1.1.1",
     "gulp-jasmine": "2.4.2",
-    "npm": "3.10.9"
+    "npm": "3.10.9",
+    "typescript": "^2.1.4"
   },
   "dependencies": {
-    "commander": "2.9.0",
+    "commander": "^2.9.0",
     "glob": "^7.1.1",
     "tastee-core": "git+https://github.com/tastee/tastee-core.git"
   },
   "bin": {
     "tastee": "./bin/tastee.js"
   },
-  "main": "./bin/tastee.js"
+  "main": "./bin/tastee.js",
+  "scripts": {
+    "start": "npm run build:live",
+    "build:live": "node ./node_modules/.bin/tsc"
+  }
 }
