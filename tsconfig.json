@@ -14,5 +14,5 @@
       "../node_modules/@types"
     ]
   },
-  "files": ["./bin/commander-expansion.d.ts","./bin/tastee.ts"]
+  "files": ["./bin/commander-expansion.d.ts","./bin/tastee-program.ts","./bin/tastee.ts"]
 }

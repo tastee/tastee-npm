@@ -25,12 +25,13 @@
     "gulp-istanbul": "1.1.1",
     "gulp-jasmine": "2.4.2",
     "npm": "3.10.9",
+    "tsc": "^1.20150623.0",
     "typescript": "^2.1.4"
   },
   "dependencies": {
     "commander": "^2.9.0",
     "glob": "^7.1.1",
-    "tastee-core": "git+https://github.com/tastee/tastee-core.git"
+    "tastee-core": "file:../tastee-core"
   },
   "bin": {
     "tastee": "./bin/tastee.js"
