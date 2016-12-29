@@ -1,10 +1,10 @@
 /// <reference path="../node_modules/@types/node/index.d.ts" />
 
 import * as fs from 'fs';
-import { TasteeCore } from 'tastee-core/src/app/tastee-core';
-import { TasteeReporter } from 'tastee-core/src/app/tastee-reporter';
-import { TasteeEngine } from 'tastee-core/src/app/tastee-engine';
-import { TasteeAnalyser } from 'tastee-core/src/app/tastee-analyser';
+import { TasteeCore } from 'tastee-core/transpiled/src/app/tastee-core';
+import { TasteeReporter } from 'tastee-core/transpiled/src/app/tastee-reporter';
+import { TasteeEngine } from 'tastee-core/transpiled/src/app/tastee-engine';
+import { TasteeAnalyser } from 'tastee-core/transpiled/src/app/tastee-analyser';
 import * as path from 'path';
 import * as glob from 'glob';
 

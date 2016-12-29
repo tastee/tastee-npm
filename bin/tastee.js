@@ -24,4 +24,4 @@ program
     }
 })
     .parse(process.argv);
-//# sourceMappingURL=/Users/luya/Workspace/tastee/tastee-npm/tastee.js.map
+//# sourceMappingURL=/media/astalin/DATA/Documents/perso/tastee/tastee-npm/tastee.js.map

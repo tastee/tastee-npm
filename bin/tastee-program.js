@@ -1,9 +1,9 @@
 /// <reference path="../node_modules/@types/node/index.d.ts" />
 "use strict";
 var fs = require("fs");
-var tastee_core_1 = require("tastee-core/src/app/tastee-core");
-var tastee_engine_1 = require("tastee-core/src/app/tastee-engine");
-var tastee_analyser_1 = require("tastee-core/src/app/tastee-analyser");
+var tastee_core_1 = require("tastee-core/transpiled/src/app/tastee-core");
+var tastee_engine_1 = require("tastee-core/transpiled/src/app/tastee-engine");
+var tastee_analyser_1 = require("tastee-core/transpiled/src/app/tastee-analyser");
 var path = require("path");
 var glob = require("glob");
 var TasteeProgram = (function () {
@@ -89,4 +89,4 @@ var TasteeProgram = (function () {
     return TasteeProgram;
 }());
 exports.TasteeProgram = TasteeProgram;
-//# sourceMappingURL=/Users/luya/Workspace/tastee/tastee-npm/tastee-program.js.map
+//# sourceMappingURL=/media/astalin/DATA/Documents/perso/tastee/tastee-npm/tastee-program.js.map
