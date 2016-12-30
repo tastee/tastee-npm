@@ -10,7 +10,7 @@ var TasteeProgram = (function () {
     function TasteeProgram(program) {
         this.workingConfigurationFilesCb = function (file, tasteeCore) { return function (err, filenames) {
             filenames.forEach(function (filename) {
-                if (filename.search('/\.conf\.tee/')) {
+                if (filename.indexOf('.conf.tee') !== -1) {
                     console.log('Add plugin file :' + filename);
                     tasteeCore.addPluginFile(filename);
                 }
@@ -89,4 +89,4 @@ var TasteeProgram = (function () {
     return TasteeProgram;
 }());
 exports.TasteeProgram = TasteeProgram;
-//# sourceMappingURL=/media/astalin/DATA/Documents/perso/tastee/tastee-npm/tastee-program.js.map
+//# sourceMappingURL=/Users/luya/Workspace/tastee/tastee-npm/tastee-program.js.map

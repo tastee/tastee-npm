@@ -1,27 +1,23 @@
 go to $url *{
-    driver.get($url);
-}*
+                 driver.get($url);
+             }*
 
-click on $name *{
-    driver.findElement(By.name($name)).click();
-}*
+             click on $name *{
+                 driver.findElement(By.css($name)).click();
+             }*
 
-verify that $name is $value *{
-    var element = driver.findElement(By.id($name));
-    element.getText().then(function(text) {
-        assert.equal(text, $value, 'the '+ $name + ' element contains '+text);
-        
-    });
-}*
+             check that $name is equal to $value *{
+                 var element = driver.findElement(By.css($name));
+                 element.getText().then(function(text) {
+                     assert.equal(text, $value, 'the '+ $name + ' element contains '+text);
 
-log some $value twice *{
-    console.log('log once '+$value+', and twice '+$value);
-}*
+                 });
+             }*
 
-call go to google *{
-    go to 'http://www.google.fr'
-}*
+             fill $field field with $value *{
+                 driver.findElement(By.css($field)).sendKeys($value);
+             }*
 
-call go to $url *{
-    go to $url
-}*
+             clear $field field *{
+                 driver.findElement(By.css($field)).clear();
+             }*

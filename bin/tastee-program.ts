@@ -55,7 +55,7 @@ export class TasteeProgram {
 
         public workingConfigurationFilesCb = (file: string, tasteeCore: TasteeCore) => function (err, filenames) {
                 filenames.forEach(function (filename) {
-                        if (filename.search('/\.conf\.tee/')) {
+                        if (filename.indexOf('.conf.tee') !== -1) {
                                 console.log('Add plugin file :' +filename)
                                 tasteeCore.addPluginFile(filename);
                         } else {
