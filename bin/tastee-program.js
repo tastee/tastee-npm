@@ -90,4 +90,4 @@ var TasteeProgram = (function () {
     return TasteeProgram;
 }());
 exports.TasteeProgram = TasteeProgram;
-//# sourceMappingURL=/Users/luya/Workspace/tastee/tastee-npm/tastee-program.js.map
+//# sourceMappingURL=/media/astalin/DATA/Documents/perso/tastee/tastee-npm/tastee-program.js.map

@@ -7,7 +7,7 @@
                      fill '#login' field with 'webdriver'
                      click on '#Go'
                      check that '#step1Done' is equal to 'Bad Credentials'
-
+git status
                      //test no login authentication
                      clear '#login' field
                      fill '#password' field with 'webdriverBad'
