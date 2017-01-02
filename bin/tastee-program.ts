@@ -14,7 +14,7 @@ export class TasteeProgram {
 
         constructor(program) {
                 this.program = program;
-                this.core = new TasteeCore(new TasteeEngine(program.browser, program.path), new TasteeAnalyser());
+                this.core = new TasteeCore(new TasteeAnalyser());
         }
 
         public runDebugMode(file: string) {
@@ -35,6 +35,7 @@ export class TasteeProgram {
                 fs.readFile(file, "utf8", function (err, data) {
                         console.log('Started ...')
                         if (!err) {
+                                tasteeProgram.core.init(new TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path))
                                 tasteeProgram.executeTasteeCore(data, file, tasteeProgram);
                                 tasteeProgram.core.stop();
                         } else {
@@ -68,7 +69,7 @@ export class TasteeProgram {
         public readFilesCb = (filename, tasteeProgram: TasteeProgram) => function (err, data) {
                 console.log('Starting  :' + filename);
                 if (!err) {
-                        tasteeProgram.core.initEnginer(new TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
+                        tasteeProgram.core.init(new TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                         tasteeProgram.executeTasteeCore(data, filename, tasteeProgram);
                         tasteeProgram.core.stop();
                 } else {

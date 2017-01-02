@@ -23,7 +23,7 @@ var TasteeProgram = (function () {
         this.readFilesCb = function (filename, tasteeProgram) { return function (err, data) {
             console.log('Starting  :' + filename);
             if (!err) {
-                tasteeProgram.core.initEnginer(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
+                tasteeProgram.core.init(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                 tasteeProgram.executeTasteeCore(data, filename, tasteeProgram);
                 tasteeProgram.core.stop();
             }
@@ -37,7 +37,7 @@ var TasteeProgram = (function () {
             });
         }; };
         this.program = program;
-        this.core = new tastee_core_1.TasteeCore(new tastee_engine_1.TasteeEngine(program.browser, program.path), new tastee_analyser_1.TasteeAnalyser());
+        this.core = new tastee_core_1.TasteeCore(new tastee_analyser_1.TasteeAnalyser());
     }
     TasteeProgram.prototype.runDebugMode = function (file) {
         var tasteeProgram = this;
@@ -56,6 +56,7 @@ var TasteeProgram = (function () {
         fs.readFile(file, "utf8", function (err, data) {
             console.log('Started ...');
             if (!err) {
+                tasteeProgram.core.init(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                 tasteeProgram.executeTasteeCore(data, file, tasteeProgram);
                 tasteeProgram.core.stop();
             }
