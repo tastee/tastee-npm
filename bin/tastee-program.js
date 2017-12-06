@@ -26,7 +26,6 @@ class TasteeProgram {
             if (!err) {
                 tasteeProgram.core.init(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                 tasteeProgram.executeTasteeCore(data, filename, tasteeProgram);
-                //tasteeProgram.core.stop();
             }
             else {
                 console.error(err);
@@ -59,7 +58,6 @@ class TasteeProgram {
             if (!err) {
                 tasteeProgram.core.init(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                 tasteeProgram.executeTasteeCore(data, file, tasteeProgram);
-                //tasteeProgram.core.stop();
             }
             else {
                 console.error(err);
@@ -68,15 +66,14 @@ class TasteeProgram {
     }
     executeTasteeCore(data, filename, tasteeProgram) {
         tasteeProgram.core.execute(data, path.basename(filename, ".tee")).then(function (instructions) {
-            switch (tasteeProgram.program.reporter) {
-                case "junit":
-                    tasteeProgram.core.engine.reporter.generateJunitReporter(instructions);
-                    break;
-                case "html":
-                    tasteeProgram.core.engine.reporter.generateHtmlReporter(tasteeProgram.program.path, path.basename(filename, ".tee"), instructions);
-                    break;
+            if (tasteeProgram.program.reporter === "junit") {
+                tasteeProgram.core.engine.reporter.generateJunitReporter(instructions);
+            }
+            else {
+                tasteeProgram.core.engine.reporter.generateHtmlReporter(tasteeProgram.program.path, path.basename(filename, ".tee"), instructions);
             }
             console.log('Finished :' + filename);
+            tasteeProgram.core.stop();
         });
         ;
     }
