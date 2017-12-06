@@ -1,14 +1,15 @@
-/// <reference path="../node_modules/@types/node/index.d.ts" />
 "use strict";
-var fs = require("fs");
-var tastee_core_1 = require("tastee-core/transpiled/src/app/tastee-core");
-var tastee_engine_1 = require("tastee-core/transpiled/src/app/tastee-engine");
-var tastee_analyser_1 = require("tastee-core/transpiled/src/app/tastee-analyser");
-var path = require("path");
-var glob = require("glob");
-var TasteeProgram = (function () {
-    function TasteeProgram(program) {
-        this.workingConfigurationFilesCb = function (file, tasteeCore) { return function (err, filenames) {
+/// <reference path="../node_modules/@types/node/index.d.ts" />
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
+const tastee_core_1 = require("tastee-core/transpiled/src/app/tastee-core");
+const tastee_engine_1 = require("tastee-core/transpiled/src/app/tastee-engine");
+const tastee_analyser_1 = require("tastee-core/transpiled/src/app/tastee-analyser");
+const path = require("path");
+const glob = require("glob");
+class TasteeProgram {
+    constructor(program) {
+        this.workingConfigurationFilesCb = (file, tasteeCore) => function (err, filenames) {
             filenames.forEach(function (filename) {
                 if (filename.indexOf('.conf.tee') !== -1) {
                     console.log('Add plugin file :' + filename);
@@ -19,27 +20,27 @@ var TasteeProgram = (function () {
                     tasteeCore.addParamFile(filename);
                 }
             });
-        }; };
-        this.readFilesCb = function (filename, tasteeProgram) { return function (err, data) {
+        };
+        this.readFilesCb = (filename, tasteeProgram) => function (err, data) {
             console.log('Starting  :' + filename);
             if (!err) {
                 tasteeProgram.core.init(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                 tasteeProgram.executeTasteeCore(data, filename, tasteeProgram);
-                tasteeProgram.core.stop();
+                //tasteeProgram.core.stop();
             }
             else {
                 console.error(err);
             }
-        }; };
-        this.workingTasteeFilesCb = function (file, tasteeProgram) { return function (err, filenames) {
+        };
+        this.workingTasteeFilesCb = (file, tasteeProgram) => function (err, filenames) {
             filenames.forEach(function (filename) {
                 fs.readFile(filename, "utf8", tasteeProgram.readFilesCb(filename, tasteeProgram));
             });
-        }; };
+        };
         this.program = program;
         this.core = new tastee_core_1.TasteeCore(new tastee_analyser_1.TasteeAnalyser());
     }
-    TasteeProgram.prototype.runDebugMode = function (file) {
+    runDebugMode(file) {
         var tasteeProgram = this;
         if (tasteeProgram.program.instructions) {
             tasteeProgram.program.instructions.split(";").forEach(function (filePath) {
@@ -58,14 +59,14 @@ var TasteeProgram = (function () {
             if (!err) {
                 tasteeProgram.core.init(new tastee_engine_1.TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                 tasteeProgram.executeTasteeCore(data, file, tasteeProgram);
-                tasteeProgram.core.stop();
+                //tasteeProgram.core.stop();
             }
             else {
                 console.error(err);
             }
         });
-    };
-    TasteeProgram.prototype.executeTasteeCore = function (data, filename, tasteeProgram) {
+    }
+    executeTasteeCore(data, filename, tasteeProgram) {
         tasteeProgram.core.execute(data, path.basename(filename, ".tee")).then(function (instructions) {
             switch (tasteeProgram.program.reporter) {
                 case "junit":
@@ -78,16 +79,15 @@ var TasteeProgram = (function () {
             console.log('Finished :' + filename);
         });
         ;
-    };
-    TasteeProgram.prototype.runContinuusMode = function (file) {
+    }
+    runContinuusMode(file) {
         console.log('Started ...');
         var tasteeProgram = this;
         glob(path.join(file, "**", "+(*.conf|*.param).tee"), { absolute: true }, this.workingConfigurationFilesCb(file, this.core));
         glob(path.join(file, "**", "!(*.conf|*.param).tee"), { absolute: true }, this.workingTasteeFilesCb(file, tasteeProgram));
-    };
-    TasteeProgram.prototype.run = function (file) {
-    };
-    return TasteeProgram;
-}());
+    }
+    run(file) {
+    }
+}
 exports.TasteeProgram = TasteeProgram;
-//# sourceMappingURL=/media/astalin/DATA/Documents/perso/tastee/tastee-npm/tastee-program.js.map
+//# sourceMappingURL=/Users/luya/Workspace/tastee-npm/tastee-program.js.map

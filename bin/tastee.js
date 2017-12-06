@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 "use strict";
-var program = require("commander");
-var tastee_program_1 = require("./tastee-program");
-var fs = require("fs");
+Object.defineProperty(exports, "__esModule", { value: true });
+const program = require("commander");
+const tastee_program_1 = require("./tastee-program");
+const fs = require("fs");
 program
     .arguments('<tastee script file>')
     .option('-i, --instructions <instruction files>', 'Custom instruction files separated with semicolons')
@@ -15,7 +16,7 @@ program
     console.log('browser       : ' + program.browser);
     console.log('reporting path : ' + program.path);
     console.log('   ***   ');
-    var tasteeProgram = new tastee_program_1.TasteeProgram(program);
+    let tasteeProgram = new tastee_program_1.TasteeProgram(program);
     if (fs.lstatSync(file).isFile()) {
         tasteeProgram.runDebugMode(file);
     }
@@ -24,4 +25,4 @@ program
     }
 })
     .parse(process.argv);
-//# sourceMappingURL=/media/astalin/DATA/Documents/perso/tastee/tastee-npm/tastee.js.map
+//# sourceMappingURL=/Users/luya/Workspace/tastee-npm/tastee.js.map

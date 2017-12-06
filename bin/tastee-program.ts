@@ -37,7 +37,6 @@ export class TasteeProgram {
                         if (!err) {
                                 tasteeProgram.core.init(new TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path))
                                 tasteeProgram.executeTasteeCore(data, file, tasteeProgram);
-                                tasteeProgram.core.stop();
                         } else {
                                 console.error(err);
                         }
@@ -51,6 +50,7 @@ export class TasteeProgram {
                                 case "html": tasteeProgram.core.engine.reporter.generateHtmlReporter(tasteeProgram.program.path, path.basename(filename, ".tee"), instructions); break;
                         }
                         console.log('Finished :' + filename);
+                        tasteeProgram.core.stop();
                 });;
         }
 
@@ -71,7 +71,6 @@ export class TasteeProgram {
                 if (!err) {
                         tasteeProgram.core.init(new TasteeEngine(tasteeProgram.program.browser, tasteeProgram.program.path));
                         tasteeProgram.executeTasteeCore(data, filename, tasteeProgram);
-                        tasteeProgram.core.stop();
                 } else {
                         console.error(err);
                 }
