@@ -45,11 +45,6 @@ export class TasteeProgram {
 
         private executeTasteeCore(data: string, filename: string, tasteeProgram: TasteeProgram) {
                 tasteeProgram.core.execute(data, path.basename(filename, ".tee")).then(function (instructions) {
-                        if(tasteeProgram.program.reporter==="junit"){
-                                tasteeProgram.core.engine.reporter.generateJunitReporter(instructions);
-                        }else{
-                                tasteeProgram.core.engine.reporter.generateHtmlReporter(tasteeProgram.program.path, path.basename(filename, ".tee"), instructions);
-                        }
                         console.log('Finished :' + filename);
                         tasteeProgram.core.stop();
                 });;

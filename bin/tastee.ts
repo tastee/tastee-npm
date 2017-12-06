@@ -10,7 +10,6 @@ program
     .option('-c, --conf <parameter files>', 'Custom parameter files separated with semicolons')
     .option('-b, --browser <browser>', 'Browser in which to execute script (either firefox, chrome, phantomJs, ... depending on your drivers)', 'firefox')
     .option('-p, --path <path>', 'Path is path where rapport generated', './tastee-reporting')
-    .option('-r, --reporter <reporter>', 'Select the desired report between : junit', 'html')
     .action(function (file) {
         console.log('   ***   ');
         console.log('browser       : ' + program.browser);
