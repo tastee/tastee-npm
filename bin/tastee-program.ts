@@ -52,7 +52,7 @@ export class TasteeProgram {
 
         public workingConfigurationFilesCb = (file: string, tasteeCore: TasteeCore) => function (err, filenames) {
                 filenames.forEach(function (filename) {
-                        if (filename.indexOf('.conf.tee') !== -1) {
+                        if (filename.indexOf('.yaml') !== -1) {
                                 console.log('Add plugin file :' +filename)
                                 tasteeCore.addPluginFile(filename);
                         } else {

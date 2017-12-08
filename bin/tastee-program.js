@@ -11,7 +11,7 @@ class TasteeProgram {
     constructor(program) {
         this.workingConfigurationFilesCb = (file, tasteeCore) => function (err, filenames) {
             filenames.forEach(function (filename) {
-                if (filename.indexOf('.conf.tee') !== -1) {
+                if (filename.indexOf('.yaml') !== -1) {
                     console.log('Add plugin file :' + filename);
                     tasteeCore.addPluginFile(filename);
                 }

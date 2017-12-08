@@ -19,10 +19,10 @@ tastee -b firefox <FOLDER>
 ```
 
 <FOLDER>  is a directory containing the following tastee files. Exemple : 
-- common-instructions.conf.tee
+- common-instructions.yaml
 - starting-tastee.tee
 
 ## Launch Tastee in debug mode
 ```
-tastee -i common-instructions.conf.tee -b firefox starting-tastee.tee 
+tastee -i common-instructions.yaml -b firefox starting-tastee.tee 
 ```
