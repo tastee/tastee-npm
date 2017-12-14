@@ -19,8 +19,6 @@
   },
   "devDependencies": {
     "@types/node": "^8.0.55",
-    "chromedriver": "^2.33.2",
-    "commander": "^2.12.2",
     "gulp": "3.9.1",
     "gulp-codacy": "1.0.0",
     "gulp-istanbul": "1.1.2",
@@ -34,6 +32,8 @@
     "mustache": "^2.3.0",
     "rmdir": "^1.2.0",
     "selenium-webdriver": "^3.6.0",
+    "commander": "^2.12.2",
+    "chromedriver": "^2.33.2",
     "tastee-core": "git+https://github.com/tastee/tastee-core.git",
     "tastee-html": "git+https://github.com/tastee/tastee-html.git",
     "ts-node": "^4.0.1",
