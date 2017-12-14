@@ -16,10 +16,6 @@ program
         console.log('extract       : ' + program.extract);
         console.log('   ***   ');
         let tasteeProgram: TasteeProgram = new TasteeProgram(program);
-        if (fs.lstatSync(file).isFile()) {
-            tasteeProgram.runTasteeFile(file);
-        } else {
-            tasteeProgram.runAllTasteeFiles(file);
-        }
+        tasteeProgram.runProgram(file);        
     })
     .parse(process.argv);

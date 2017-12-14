@@ -17,6 +17,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <style>
+        .ok{    color: green;}
+        .ko{    color: red;}
+    </style>
 </head>
 
 <body>
@@ -38,13 +42,13 @@
     <div class="section white">
 
         <div class="row container">
-            <h3 class="left-align header red-text text-darken-5">Report for : rechercher_tastee</h3>
+            <h3 class="left-align header red-text text-darken-5">List of reports: </h3>
 
-            <html><head></head><body><pre class="tastee green">//savor rechercher_tastee.yaml</pre>
-<pre class="tastee green">Allez sur le site &apos;https://www.google.fr&apos;</pre>
-<pre class="tastee green">Renseigner &apos;lst-ib&apos; avec &apos;https://tastee.github.io/&apos;</pre>
-<pre class="tastee green">Cliquer sur le boutton &apos;#tsf &gt; div.tsf-p &gt; div.jsb &gt; center &gt; input[type=&quot;submit&quot;]:nth-child(1)&apos;</pre>
-<pre class="tastee green">V&#xE9;rifier que &apos;//*[@id=&quot;rso&quot;]/div/div/div[1]/div/div/h3/a&apos; est identique &#xE0; &apos;Tastee &#x2014; test framework : test made Natural&apos;</pre></body></html>
+            <ul>
+                {{#files}}
+                <li>{{{link}}}</li>
+                {{/files}}
+            </ul>
 
         </div>
 
