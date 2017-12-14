@@ -41,9 +41,9 @@
     "webdriver-manager": "^12.0.6"
   },
   "bin": {
-    "tastee": "./bin/tastee.js"
+    "tastee": "./dist/tastee.js"
   },
-  "main": "./bin/tastee.js",
+  "main": "./dist/tastee.js",
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc"
