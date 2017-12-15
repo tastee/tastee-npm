@@ -35,19 +35,19 @@ export class TasteeProgram {
                                 data = ExtractTasteeCode.extract(file);
 
                 }
-                const regex = /\/\/savor\ (.*.yaml)/g;
+                const regex = /\/\/savor\ (.*(.yaml|.properties))/g;
                 let match;
-                let pluginTreated = false;
                 while (match = regex.exec(data.join('\n'))) {
-                        if (path.isAbsolute(match[1])) {
-                                core.addPluginFile(path)
-                        } else {
-                                const pathOfFile = path.join(path.dirname(file), match[1]);
-                                if (fs.existsSync(pathOfFile)) {
-                                        core.addPluginFile(pathOfFile)
-                                }
+                        switch (path.extname(match[1])) {
+                                case '.yaml':
+                                        core.addPluginFile(this._getPathOfFile(file, match[1]));
+                                        break;
+                                case '.properties':
+                                        core.addParamFile(this._getPathOfFile(file, match[1]));
+                                        break;
                         }
                 }
+
                 core.init(new TasteeEngine(this.program.browser))
                 core.execute(data.join('\n'), file).then(instructions => {
                         core.stop();
@@ -62,13 +62,16 @@ export class TasteeProgram {
                 const nameOfFile = path.basename(file, '.html');
                 dataFile('pre.tastee').each((idx, elt) => {
                         let instruction = instructions.filter(instruction => instruction.lineNumber == idx)[0];
-                        if (instruction.valid) {
-                                elt.attribs = { class: 'tastee green' }
-                        } else {
-                                elt.attribs = { class: 'tastee red' }
+                        if (instruction) {
+                                if (instruction.valid) {
+                                        elt.attribs = { class: 'tastee green' }
+                                } else {
+                                        elt.attribs = { class: 'tastee red' }
+                                }
                         }
                 });
                 var output = mustache.to_html(html, { nameOfTest: nameOfFile, data: dataFile.html() });
+
                 if (!fs.existsSync(this.program.output)) {
                         fs.mkdirSync(this.program.output);
                 }
@@ -84,4 +87,14 @@ export class TasteeProgram {
                 fs.writeFileSync(path.join(this.program.output, 'index.html'), output);
         }
 
+        private _getPathOfFile(pathToAnalyse: string, pathFile: string): string {
+                if (path.isAbsolute(pathFile)) {
+                        return pathFile;
+                } else {
+                        const pathOfFile = path.join(path.dirname(pathToAnalyse), pathFile);
+                        if (fs.existsSync(pathOfFile)) {
+                                return pathOfFile;
+                        }
+                }
+        }
 }
