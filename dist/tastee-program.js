@@ -19,7 +19,7 @@ class TasteeProgram {
             this.runTasteeFile(file);
         }
         else {
-            let files = glob.sync(path.join(file, "**", "*.tee"), { absolute: true });
+            let files = glob.sync(path.join(file, "**", "*.html"), { absolute: true });
             files.forEach(file => this.runTasteeFile(file));
         }
     }
@@ -54,7 +54,7 @@ class TasteeProgram {
     writeReportingFromHtml(file, instructions) {
         const html = fs.readFileSync(path.join(__dirname, "../reporting", "template_tastee_file.html"), "utf8");
         const dataFile = cheerio.load(fs.readFileSync(file).toString());
-        const nameOfFile = path.basename(file, '.tee');
+        const nameOfFile = path.basename(file, '.html');
         dataFile('pre.tastee').each((idx, elt) => {
             let instruction = instructions.filter(instruction => instruction.lineNumber == idx)[0];
             if (instruction.valid) {

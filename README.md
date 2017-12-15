@@ -24,7 +24,7 @@ tastee -b <browser> -o <output> -e <extract> <FOLDER>
 
 ## Example
 ```
-tastee -b firefox starting-tastee.tee 
+tastee -b firefox starting-tastee.html 
 tastee -b chrome /tmp 
 tastee -b chrome -e html /tmp 
 tastee -b chrome -e html -o /tmp/report/ ../tastee_folder 
