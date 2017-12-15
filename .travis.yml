@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "7"
+  - "6"
+install:
+  - npm install
+deploy:
+  provider: npm
+  email: tastee.is.good@gmail.com
+  api_key:
+    secure: aNAMOavOyf1GoLBuk/VD1hSI2Z9og+TSgE/aUYFGOPcSxeokFuzT6k1LOQ1BpIre9z7KtTqcVKpDAdUVfvnDTI0Hdanetg0zay77jJrLwp01P/hzqHnnuie4ioRBaBzVKAMrnvKm4JknOO9a7DkxV7DuKVMZbK4kLCjftYb84g6UTm8eJcA2MUliW+ixpjF9L6p7bZiXATklHvPslvD/PzhGKQZzziz+E8I15tEFP5JnH6xGlvnoYsYWESy2S3kP/4amzNUEPyXetvqqhht6Xj+9wJq//5LoE/xMs7zro+pN5A+IFEdfujU1+pCPJTYHwBaGEicR1ddeVhZwM2CXHz6Wuj16IskM0z5t4kTdaFv6/siIizhag5wL9frfcgsGAQHSKGPnnyoKjUY2CAsl1E3Nk96hicDIzb1IuGPU9O9kq/OgSAKBix9wmtrBsKhnhSNN4u5TSuN3Wn7QeqEl+AHZwxyG0uUsEv4DtEcr6dmiCmprVMkifuvoa0KZsx8xfTQg/vwrDF8uZwe39YnK1JhI/eByefhBWn8wTxzNJiKpW9/0vuDYoxS6ffTFm7fph71eHJ8d9C2F5dsZC6rUCYkaTcm2coO2Rx8CYI0cVeABEePVUxN1S0cxxbvitLExZPoIyXfNNOGWAxfbWMbJNxoBofi/FaYlHhQTY9Gcodo=
+  on:
+    tags: true
+    repo: tastee/tastee-npm
