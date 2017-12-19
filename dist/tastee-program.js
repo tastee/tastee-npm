@@ -36,11 +36,9 @@ class TasteeProgram {
         while (match = regex.exec(data.join('\n'))) {
             switch (path.extname(match[1])) {
                 case '.yaml':
-                    console.log("yaml");
                     core.addPluginFile(this._getPathOfFile(file, match[1]));
                     break;
                 case '.properties':
-                    console.log("properties");
                     core.addParamFile(this._getPathOfFile(file, match[1]));
                     break;
             }
