@@ -1,6 +1,6 @@
 {
   "name": "tastee",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Toast your Application with Simple Tests End to End - Command line module",
   "homepage": "http://tastee.github.io",
   "keywords": [
