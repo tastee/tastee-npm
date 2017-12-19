@@ -25,6 +25,7 @@ class TasteeProgram {
     }
     runTasteeFile(file) {
         const core = new tastee_core_1.TasteeCore(new tastee_core_1.TasteeAnalyser());
+        core.init(new tastee_core_1.TasteeEngine(this.program.browser, this.program.headless));
         let data = [];
         switch (this.program.extract) {
             case 'html':
@@ -35,14 +36,15 @@ class TasteeProgram {
         while (match = regex.exec(data.join('\n'))) {
             switch (path.extname(match[1])) {
                 case '.yaml':
+                    console.log("yaml");
                     core.addPluginFile(this._getPathOfFile(file, match[1]));
                     break;
                 case '.properties':
+                    console.log("properties");
                     core.addParamFile(this._getPathOfFile(file, match[1]));
                     break;
             }
         }
-        core.init(new tastee_core_1.TasteeEngine(this.program.browser));
         core.execute(data.join('\n'), file).then(instructions => {
             core.stop();
             this.writeReportingFromHtml(file, instructions);
