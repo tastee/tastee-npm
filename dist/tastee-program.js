@@ -72,6 +72,13 @@ class TasteeProgram {
         const hasErrors = instructions.filter(instruction => !instruction.valid).length > 0;
         this.files.push({ link: util.format('<a class="%s" href="./%s.html">%s</a>', hasErrors ? 'ko' : 'ok', nameOfFile, nameOfFile) });
         fs.createReadStream(path.join(__dirname, "../reporting", "home.png")).pipe(fs.createWriteStream(path.join(this.program.output, 'home.png')));
+        fs.createReadStream(path.join(__dirname, "../reporting", "fonts.woff2")).pipe(fs.createWriteStream(path.join(this.program.output, 'fonts.woff2')));
+        fs.createReadStream(path.join(__dirname, "../reporting", "jquery-2.1.4.min.js")).pipe(fs.createWriteStream(path.join(this.program.output, 'jquery-2.1.4.min.js')));
+        fs.createReadStream(path.join(__dirname, "../reporting", "Material+Icons")).pipe(fs.createWriteStream(path.join(this.program.output, 'Material+Icons')));
+        fs.createReadStream(path.join(__dirname, "../reporting", "materialize.min.css")).pipe(fs.createWriteStream(path.join(this.program.output, 'materialize.min.css')));
+        fs.createReadStream(path.join(__dirname, "../reporting", "materialize.min.js")).pipe(fs.createWriteStream(path.join(this.program.output, 'materialize.min.js')));
+        fs.createReadStream(path.join(__dirname, "../reporting", "tastee.css")).pipe(fs.createWriteStream(path.join(this.program.output, 'tastee.css')));
+        fs.createReadStream(path.join(__dirname, "../reporting", "tastee.js")).pipe(fs.createWriteStream(path.join(this.program.output, 'tastee.js')));
     }
     writeIndexFile() {
         const html = fs.readFileSync(path.join(__dirname, "../reporting", "template_index.html"), "utf8");
