@@ -26,6 +26,7 @@
     "npm": "5.5.1"
   },
   "dependencies": {
+    "@types/winston": "^2.3.9",
     "cheerio": "^1.0.0-rc.2",
     "chromedriver": "^2.33.2",
     "commander": "^2.12.2",
@@ -35,12 +36,13 @@
     "mustache": "^2.3.0",
     "rmdir": "^1.2.0",
     "selenium-webdriver": "^3.6.0",
-    "tastee-core": "0.9.7",
+    "tastee-core": "0.9.8",
     "tastee-html": "0.9.4",
     "ts-node": "^4.0.1",
+    "tsc": "^1.20150623.0",
     "typescript": "^2.6.2",
     "webdriver-manager": "^12.0.6",
-    "tsc": "^1.20150623.0"
+    "winston": "^2.4.1"
   },
   "bin": {
     "tastee": "./dist/tastee.js"

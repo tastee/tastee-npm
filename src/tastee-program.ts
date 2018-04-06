@@ -9,14 +9,23 @@ import * as path from 'path';
 import * as glob from 'glob';
 import * as mustache from 'mustache';
 import * as cheerio from 'cheerio';
+import * as logger from "winston";
 
 export class TasteeProgram {
         private program: any;
         private files: Array<any> = [];
+
         constructor(program) {
                 this.program = program;
+                logger.configure({
+                        level: this.program.logLevel,
+                        transports: [
+                            new logger.transports.Console({
+                                colorize: true
+                            })
+                        ]
+                    });
         }
-
 
         public runProgram(file: string) {
                 if (fs.lstatSync(file).isFile()) {
