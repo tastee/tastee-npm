@@ -37,6 +37,8 @@ export class TasteeProgram {
         }
 
         public runTasteeFile(file: string) {
+                logger.debug('Processing file : %s', file)
+
                 const core = new TasteeCore(new TasteeAnalyser());
                 core.init(new TasteeEngine(this.program.browser,this.program.headless))
 
@@ -49,12 +51,15 @@ export class TasteeProgram {
                 const regex = /\/\/savor\ (.*(.yaml|.properties))/g;
                 let match;
                 while (match = regex.exec(data.join('\n'))) {
+                        let filePath = this._getPathOfFile(file, match[1]);
                         switch (path.extname(match[1])) {
                                 case '.yaml':
-                                        core.addPluginFile(this._getPathOfFile(file, match[1]));
+                                        logger.debug('Adding Yaml File : %s', filePath)
+                                        core.addPluginFile(filePath);
                                         break;
                                 case '.properties':
-                                        core.addParamFile(this._getPathOfFile(file, match[1]));
+                                        logger.debug('Adding propery File : %s', filePath)
+                                        core.addParamFile(filePath);
                                         break;
                         }
                 }
@@ -63,6 +68,7 @@ export class TasteeProgram {
                         this.writeReportingFromHtml(file, instructions);
                         this.writeIndexFile();
                 });
+                logger.debug('End of processing file : %s', file)
         }
 
         public writeReportingFromHtml(file: string, instructions: Array<any>) {
