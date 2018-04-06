@@ -9,10 +9,19 @@ const path = require("path");
 const glob = require("glob");
 const mustache = require("mustache");
 const cheerio = require("cheerio");
+const logger = require("winston");
 class TasteeProgram {
     constructor(program) {
         this.files = [];
         this.program = program;
+        logger.configure({
+            level: this.program.logLevel,
+            transports: [
+                new logger.transports.Console({
+                    colorize: true
+                })
+            ]
+        });
     }
     runProgram(file) {
         if (fs.lstatSync(file).isFile()) {
@@ -24,6 +33,7 @@ class TasteeProgram {
         }
     }
     runTasteeFile(file) {
+        logger.debug('Processing file : %s', file);
         const core = new tastee_core_1.TasteeCore(new tastee_core_1.TasteeAnalyser());
         core.init(new tastee_core_1.TasteeEngine(this.program.browser, this.program.headless));
         let data = [];
@@ -34,12 +44,15 @@ class TasteeProgram {
         const regex = /\/\/savor\ (.*(.yaml|.properties))/g;
         let match;
         while (match = regex.exec(data.join('\n'))) {
+            let filePath = this._getPathOfFile(file, match[1]);
             switch (path.extname(match[1])) {
                 case '.yaml':
-                    core.addPluginFile(this._getPathOfFile(file, match[1]));
+                    logger.debug('Adding Yaml File : %s', filePath);
+                    core.addPluginFile(filePath);
                     break;
                 case '.properties':
-                    core.addParamFile(this._getPathOfFile(file, match[1]));
+                    logger.debug('Adding propery File : %s', filePath);
+                    core.addParamFile(filePath);
                     break;
             }
         }
@@ -48,6 +61,7 @@ class TasteeProgram {
             this.writeReportingFromHtml(file, instructions);
             this.writeIndexFile();
         });
+        logger.debug('End of processing file : %s', file);
     }
     writeReportingFromHtml(file, instructions) {
         const html = fs.readFileSync(path.join(__dirname, "../reporting", "template_tastee_file.html"), "utf8");
