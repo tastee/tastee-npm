@@ -25,43 +25,56 @@ class TasteeProgram {
     }
     runProgram(file) {
         if (fs.lstatSync(file).isFile()) {
-            this.runTasteeFile(file);
+            this.runTasteeFileSync([file], 0);
         }
         else {
             let files = glob.sync(path.join(file, "**", "*.html"), { absolute: true });
-            files.forEach(file => this.runTasteeFile(file));
+            let index = 0;
+            this.runTasteeFileSync(files, index);
         }
     }
-    runTasteeFile(file) {
-        logger.debug('Processing file : %s', file);
-        const core = new tastee_core_1.TasteeCore(new tastee_core_1.TasteeAnalyser());
-        core.init(new tastee_core_1.TasteeEngine(this.program.browser, this.program.headless));
-        let data = [];
-        switch (this.program.extract) {
-            case 'html':
-                data = tastee_html_1.ExtractTasteeCode.extract(file);
-        }
-        const regex = /\/\/savor\ (.*(.yaml|.properties))/g;
-        let match;
-        while (match = regex.exec(data.join('\n'))) {
-            let filePath = this._getPathOfFile(file, match[1]);
-            switch (path.extname(match[1])) {
-                case '.yaml':
-                    logger.debug('Adding Yaml File : %s', filePath);
-                    core.addPluginFile(filePath);
-                    break;
-                case '.properties':
-                    logger.debug('Adding propery File : %s', filePath);
-                    core.addParamFile(filePath);
-                    break;
+    runTasteeFileSync(files, index) {
+        let file = files[index];
+        if (file) {
+            logger.debug('Processing file : %s', file);
+            const core = new tastee_core_1.TasteeCore(new tastee_core_1.TasteeAnalyser());
+            core.init(new tastee_core_1.TasteeEngine(this.program.browser, this.program.headless));
+            let data = [];
+            switch (this.program.extract) {
+                case 'html':
+                    data = tastee_html_1.ExtractTasteeCode.extract(file);
             }
+            const regex = /\/\/savor\ (.*(.yaml|.properties))/g;
+            let match;
+            while (match = regex.exec(data.join('\n'))) {
+                let filePath = this._getPathOfFile(file, match[1]);
+                switch (path.extname(match[1])) {
+                    case '.yaml':
+                        logger.debug('Adding Yaml File : %s', filePath);
+                        core.addPluginFile(filePath);
+                        break;
+                    case '.properties':
+                        logger.debug('Adding propery File : %s', filePath);
+                        core.addParamFile(filePath);
+                        break;
+                }
+            }
+            core.execute(data.join('\n'), file).then(instructions => {
+                core.stop();
+                this.writeReportingFromHtml(file, instructions);
+                this.writeIndexFile();
+                logger.debug('End of processing file : %s\n\n', file);
+                index++;
+                this.runTasteeFileSync(files, index);
+            }).catch((err) => {
+                logger.error(err);
+                core.stop();
+                this.writeIndexFile();
+                logger.debug('End of processing file : %s\n\n', file);
+                index++;
+                this.runTasteeFileSync(files, index);
+            });
         }
-        core.execute(data.join('\n'), file).then(instructions => {
-            core.stop();
-            this.writeReportingFromHtml(file, instructions);
-            this.writeIndexFile();
-        });
-        logger.debug('End of processing file : %s', file);
     }
     writeReportingFromHtml(file, instructions) {
         const html = fs.readFileSync(path.join(__dirname, "../reporting", "template_tastee_file.html"), "utf8");
