@@ -15,7 +15,7 @@ class TasteeProgram {
         this.files = [];
         this.program = program;
         logger.configure({
-            level: this.program.logLevel,
+            level: this.program.loglevel,
             transports: [
                 new logger.transports.Console({
                     colorize: true
