@@ -18,7 +18,7 @@ export class TasteeProgram {
         constructor(program) {
                 this.program = program;
                 logger.configure({
-                        level: this.program.logLevel,
+                        level: this.program.loglevel,
                         transports: [
                             new logger.transports.Console({
                                 colorize: true
