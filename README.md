@@ -10,6 +10,7 @@ executable npm module for tastee
 ```
 git clone https://github.com/tastee/tastee-npm.git 
 cd tastee-npm 
+npm uninstall -g tastee
 npm install -g 
 ```
 
