@@ -44,7 +44,7 @@ export class TasteeProgram {
                         logger.debug('Processing file : %s', file);
 
                         const core = new TasteeCore(new TasteeAnalyser());
-                        core.init(new TasteeEngine(this.program.browser,this.program.headless))
+                        core.init(new TasteeEngine(this.program.browser,this.program.headless === 'true'))
         
                         let data: Array<String> = [];
                         switch (this.program.extract) {
