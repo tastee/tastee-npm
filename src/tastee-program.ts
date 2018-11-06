@@ -9,7 +9,9 @@ import * as path from 'path';
 import * as glob from 'glob';
 import * as mustache from 'mustache';
 import * as cheerio from 'cheerio';
-import * as logger from "winston";
+import * as winston from "winston";
+
+const logger = winston.loggers.get('tasteeLog');
 
 export class TasteeProgram {
         private program: any;
@@ -19,12 +21,16 @@ export class TasteeProgram {
                 this.program = program;
                 logger.configure({
                         level: this.program.loglevel,
+                        format: winston.format.combine(
+                            winston.format.colorize(),
+                            winston.format.timestamp(),
+                            winston.format.splat(),
+                            winston.format.simple()
+                          ),
                         transports: [
-                            new logger.transports.Console({
-                                colorize: true
-                            })
+                            new winston.transports.Console()
                         ]
-                    });
+                      });
         }
 
         public runProgram(file: string) {
@@ -44,7 +50,7 @@ export class TasteeProgram {
                         logger.debug('Processing file : %s', file);
 
                         const core = new TasteeCore(new TasteeAnalyser());
-                        core.init(new TasteeEngine(this.program.browser,this.program.headless === 'true'))
+                        core.init(new TasteeEngine(this.program.browser,this.program.headless === 'true', logger))
         
                         let data: Array<String> = [];
                         switch (this.program.extract) {
@@ -68,7 +74,7 @@ export class TasteeProgram {
                                 }
                         }
         
-                        core.execute(data.join('\n'), file).then(instructions => {
+                        core.execute(data.join('\n')).then(instructions => {
                                 core.stop();
                                 this.writeReportingFromHtml(file, instructions);
                                 this.writeIndexFile();

@@ -9,17 +9,17 @@ const path = require("path");
 const glob = require("glob");
 const mustache = require("mustache");
 const cheerio = require("cheerio");
-const logger = require("winston");
+const winston = require("winston");
+const logger = winston.loggers.get('tasteeLog');
 class TasteeProgram {
     constructor(program) {
         this.files = [];
         this.program = program;
         logger.configure({
             level: this.program.loglevel,
+            format: winston.format.combine(winston.format.colorize(), winston.format.timestamp(), winston.format.splat(), winston.format.simple()),
             transports: [
-                new logger.transports.Console({
-                    colorize: true
-                })
+                new winston.transports.Console()
             ]
         });
     }
@@ -38,7 +38,7 @@ class TasteeProgram {
         if (file) {
             logger.debug('Processing file : %s', file);
             const core = new tastee_core_1.TasteeCore(new tastee_core_1.TasteeAnalyser());
-            core.init(new tastee_core_1.TasteeEngine(this.program.browser, this.program.headless));
+            core.init(new tastee_core_1.TasteeEngine(this.program.browser, this.program.headless === 'true', logger));
             let data = [];
             switch (this.program.extract) {
                 case 'html':
@@ -59,7 +59,7 @@ class TasteeProgram {
                         break;
                 }
             }
-            core.execute(data.join('\n'), file).then(instructions => {
+            core.execute(data.join('\n')).then(instructions => {
                 core.stop();
                 this.writeReportingFromHtml(file, instructions);
                 this.writeIndexFile();
